@@ -1,7 +1,6 @@
 ﻿  DE.cpp
   Génération de code en cours
-  183 of 187 functions (97.9%) were compiled, the rest were copied from previous compilation.
-    0 functions were new in current compilation
-    1 functions had inline decision re-evaluated but remain unchanged
+  Previous IPDB not found, fall back to full compilation.
+  All 187 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
   Fin de la génération du code
-  LaboDE.vcxproj -> D:\OneDrive - Université du Québec à Chicoutimi\Enseignement matiere\INF808\TP\Labo\Labo DE\TP4 A22 FctContinues Alpin-Rastrin\Pour etudiants\LaboDE Etudiant A22\x64\Release\LaboDE.exe
+  LaboDE.vcxproj -> C:\Users\Maxime\Documents\UQAC\RO\TP4\RO_TP4\LaboDE Etudiant A22\x64\Release\LaboDE.exe

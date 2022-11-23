@@ -1,10 +1,10 @@
 #include "Entete.h"
 #pragma comment (lib,"EvoDiffDLL.lib")  
 //%%%%%%%%%%%%%%%%%%%%%%%%% IMPORTANT: %%%%%%%%%%%%%%%%%%%%%%%%% 
-//Les fichiers de la DLL (DiffEvolutionDLL.dll et DiffEvolutionDLL.lib) doivent se trouver dans le même répertoire que l'exécutable (.exe) et 
-//dans le répertoire courant du projet pour une exécution à l'aide du compilateur.
-//Indiquer les arguments du programme dans les propriétés du projet - débogage - arguements.
-//Sinon, utiliser le répertoire execution.
+//Les fichiers de la DLL (DiffEvolutionDLL.dll et DiffEvolutionDLL.lib) doivent se trouver dans le mï¿½me rï¿½pertoire que l'exï¿½cutable (.exe) et 
+//dans le rï¿½pertoire courant du projet pour une exï¿½cution ï¿½ l'aide du compilateur.
+//Indiquer les arguments du programme dans les propriï¿½tï¿½s du projet - dï¿½bogage - arguements.
+//Sinon, utiliser le rï¿½pertoire execution.
 
 //*****************************************************************************************
 // Prototype des fonctions se trouvant dans la DLL 
@@ -12,29 +12,29 @@
 //DESCRIPTION: Dimension des vecteurs de la population & initialisation des solutions avec des valeurs entre Xmin et Xmax.
 extern "C" _declspec(dllimport) void InitialisationPopulation(std::vector<tSolution> &unePop, tProblem unProb, tAlgoDE &unDE);
 
-//DESCRIPTION: SÉLECTION: On retient le meilleur vecteur entre le vecteur trial (essai) et le vecteur target (cible) pour prendre la place de ce dernier dans la population
-//PARAMETRES: unTarget-Vecteur cible qui pourra être remplacé par le vecteur trial si ce dernier présente une meilleure fonction objectif, iTarget-Indice dans la population du vecteur cible 
-//(nécessaire à la MAJ de la Best), unTrial-Vecteur d'essai, uneBest-Meilleure solution depuis le début de l'algorithme, iBest-Indice dans la population de la meilleure solution qui pourra être modifié
-//unProb-Définition du probleme, unDE-Définition de l'algorithme
+//DESCRIPTION: Sï¿½LECTION: On retient le meilleur vecteur entre le vecteur trial (essai) et le vecteur target (cible) pour prendre la place de ce dernier dans la population
+//PARAMETRES: unTarget-Vecteur cible qui pourra ï¿½tre remplacï¿½ par le vecteur trial si ce dernier prï¿½sente une meilleure fonction objectif, iTarget-Indice dans la population du vecteur cible 
+//(nï¿½cessaire ï¿½ la MAJ de la Best), unTrial-Vecteur d'essai, uneBest-Meilleure solution depuis le dï¿½but de l'algorithme, iBest-Indice dans la population de la meilleure solution qui pourra ï¿½tre modifiï¿½
+//unProb-Dï¿½finition du probleme, unDE-Dï¿½finition de l'algorithme
 extern "C" _declspec(dllimport) void Selection(tSolution &unTarget, int iTarget, tSolution unTrial, tSolution uneBest, int &iBest, tProblem unProb, tAlgoDE unDE);
 
-//DESCRIPTION: Renvoie un double aléatoire entre a et b
+//DESCRIPTION: Renvoie un double alï¿½atoire entre a et b
 extern "C" _declspec(dllimport) double AleaDouble(double a, double b);
 
-//DESCRIPTION: Fonction qui affiche le détail des solutions (de Debut jusqu'a Fin-1) de la population
+//DESCRIPTION: Fonction qui affiche le dï¿½tail des solutions (de Debut jusqu'a Fin-1) de la population
 extern "C" _declspec(dllimport) void AfficherSolutions(std::vector<tSolution> unePop, int Debut, int Fin, int Iter, tProblem unProb);
 
-//DESCRITPION: Fonction qui affiche une solution (bool Detail: avec ou sans détail)
+//DESCRITPION: Fonction qui affiche une solution (bool Detail: avec ou sans dï¿½tail)
 extern "C" _declspec(dllimport) void AfficherUneSolution(tSolution P, int Iter, tProblem unProb, bool Detail);
-//DESCRIPTION: Fonction qui affiche une solution dans un fichier de sortie (bool Detail: avec ou sans détail)
+//DESCRIPTION: Fonction qui affiche une solution dans un fichier de sortie (bool Detail: avec ou sans dï¿½tail)
 extern "C" _declspec(dllimport) void AfficherUneSolutionFichier(tSolution Sol, int Iter, tProblem unProb, bool Detail, ofstream &Fichier);
 
-//DESCRIPTION: Fonction affichant les résultats de l'algorithme
+//DESCRIPTION: Fonction affichant les rï¿½sultats de l'algorithme
 extern "C" _declspec(dllimport) void AfficherResultats(tSolution uneBest, tProblem unProb, tAlgoDE unDE);
-//DESCRIPTION: Fonction affichant les résultats de l'algorithme dans un fichier texte
+//DESCRIPTION: Fonction affichant les rï¿½sultats de l'algorithme dans un fichier texte
 extern "C" _declspec(dllimport) void AfficherResultatsFichier(tSolution uneBest, tProblem unProb, tAlgoDE unDE, std::string FileName);
 
-//**Liberation de la mémoire allouée dynamiquement
+//**Liberation de la mï¿½moire allouï¿½e dynamiquement
 extern "C" _declspec(dllimport) void LibererMemoireFinPgm(std::vector<tSolution> &unePop, tProblem unProb, tAlgoDE unDE);
 
 //*****************************************************************************************
@@ -45,19 +45,23 @@ void EvaluationSolution(tSolution &Sol, tProblem unProb, tAlgoDE &unDE);
 void Mutation(std::vector<tSolution> unePop, int iTarget, int iBest, tSolution &unMutant, tProblem unProb, tAlgoDE unDE);
 void Croisement(tSolution unTarget, tSolution unMutant, tSolution &unTrial, tProblem unProb, tAlgoDE &unDE);
 
+double pi = 2 * acos(0.0);			//** Calcul de Pi utilise dans une fonction obj
+
 //******************************************************************************************
 // Fonction main
 //******************************************************************************************
 int main(int NbParam, char *Param[])
 {
-	tProblem LeProb;					//**Définition de l'instance de problème
-	tAlgoDE LeDE;						//**Définition des paramètres de l'algorithme
+	tProblem LeProb;					//**Dï¿½finition de l'instance de problï¿½me
+	tAlgoDE LeDE;						//**Dï¿½finition des paramï¿½tres de l'algorithme
 	std::vector<tSolution> Pop;			//**Ensemble de solutions 
 	tSolution Mutant, Trial;			//**Vecteurs: mutant(donneur) et essai
-	int NoBest;							//**Indice dans la Pop de la Meilleure solution depuis le début de l'algorithme
+	int NoBest;							//**Indice dans la Pop de la Meilleure solution depuis le dï¿½but de l'algorithme
 	int i;
 	
-		//**Lecture des paramètres
+	
+	
+		//**Lecture des paramï¿½tres
 	LeDE.NP				= atoi(Param[1]);
 	LeDE.F				= atof(Param[2]);
 	LeDE.CR				= atof(Param[3]);
@@ -68,16 +72,16 @@ int main(int NbParam, char *Param[])
 	srand((unsigned)time(NULL));							//**Precise un germe pour le generateur aleatoire
 	cout.setf(ios::fixed | ios::showpoint);
 
-	//**Choix de la stratégie de mutation/croisement
-	LeDE.TypeMut = RAND1;									//**Spécifie le type de Mutation (sélection solutions + #perturbations) - Voir Entete.h
-	LeDE.TypeCr = EXP;										//**Spécifie le type de croisement  - Voir Entete.h
+	//**Choix de la stratï¿½gie de mutation/croisement
+	LeDE.TypeMut = RAND1;									//**Spï¿½cifie le type de Mutation (sï¿½lection solutions + #perturbations) - Voir Entete.h
+	LeDE.TypeCr = EXP;										//**Spï¿½cifie le type de croisement  - Voir Entete.h
 	
-	//**Spécifications du problème à traiter
-	LeProb.Fonction = BOOTH;								//**Spécifie le problème traité  - Voir Entete.h
+	//**Spï¿½cifications du problï¿½me ï¿½ traiter
+	LeProb.Fonction = BOOTH;								//**Spï¿½cifie le problï¿½me traitï¿½  - Voir Entete.h
 	InitialisationDomaineVariable(LeProb);
 
 	//**Dimension du vecteur de la population, initialisation des solutions avec des valeurs entre Xmin et Xmax
-	InitialisationPopulation(Pop, LeProb, LeDE);			//**NB: Pop est un vecteur de 0 à NP - 1
+	InitialisationPopulation(Pop, LeProb, LeDE);			//**NB: Pop est un vecteur de 0 ï¿½ NP - 1
 	//**Evaluation des solutions et conservation de la meilleure solution
 	for (i = 0; i < LeDE.NP; i++)
 	{
@@ -98,16 +102,16 @@ int main(int NbParam, char *Param[])
 	AfficherUneSolution(Pop[NoBest], LeDE.Iter, LeProb, false);
 
 	//**Boucle principale de l'algorithme
-	while (LeDE.CptEval < LeDE.NB_EVAL_MAX) 	//**NE PAS ENLEVER/MODIFIER LA CONDITION SUR LE NOMBRE D'ÉVALUATION
+	while (LeDE.CptEval < LeDE.NB_EVAL_MAX) 	//**NE PAS ENLEVER/MODIFIER LA CONDITION SUR LE NOMBRE D'ï¿½VALUATION
 	{
 		LeDE.Iter++;
 		
 		for (i = 0; i < LeDE.NP; i++)
 		{
-			//**MUTATION: Création du vecteur mutant
+			//**MUTATION: Crï¿½ation du vecteur mutant
 			Mutation(Pop, i, NoBest, Mutant, LeProb, LeDE);
 
-			//**CROISEMENT: Création du vecteur trial (essai)
+			//**CROISEMENT: Crï¿½ation du vecteur trial (essai)
 			Croisement(Pop[i], Mutant, Trial, LeProb, LeDE);
 
 			//**SELECTION: entre le vecteur target(cible) et le vecteur trial (essai)
@@ -128,19 +132,21 @@ int main(int NbParam, char *Param[])
 }
 
 //**-----------------------------------------------------------------------
-//**Détermine l'intervalle de recherche selon la fonction choisie
+//**Dï¿½termine l'intervalle de recherche selon la fonction choisie
 void InitialisationDomaineVariable(tProblem &unProb)
 {
 	switch(unProb.Fonction)
 	{
 		case BOOTH:		unProb.Xmin = -10.0;	unProb.Xmax = 10.0; unProb.D = 2; break;
 		case SPHERE:	unProb.Xmin = -5.12;	unProb.Xmax = 5.12; unProb.D = 10; break;
+		case ALPINE:    unProb.Xmin = -10.0;	unProb.Xmax = 10.0; unProb.D = 10; break;
+		case RASTRIN:	unProb.Xmin = -5.12;	unProb.Xmax = 5.12; unProb.D = 10; break;
 		default:		unProb.Xmin = 0.0;		unProb.Xmax = 0.0;	unProb.D = 0; break;
 	}
 }
 
 //**-----------------------------------------------------------------------
-//**Calcul de la fonction objectif d'une solution selon la fonction continue (problème) sélectionnée
+//**Calcul de la fonction objectif d'une solution selon la fonction continue (problï¿½me) sï¿½lectionnï¿½e
 void EvaluationSolution(tSolution &Sol, tProblem unProb, tAlgoDE &unDE)
 {
 	double valeur = 0.0;
@@ -160,6 +166,21 @@ void EvaluationSolution(tSolution &Sol, tProblem unProb, tAlgoDE &unDE)
 			}
 			break;
 
+		case ALPINE : 
+			for (d = 0; d < unProb.D; d++)
+			{
+				valeur += abs( Sol.X[d] * ( sin(Sol.X[d]) + 0.1 ) );
+			}
+			break;
+		
+		case RASTRIN :			
+			for (d = 0; d < unProb.D; d++)
+			{
+				valeur += pow(Sol.X[d], 2) - 10 * cos(2 * pi * Sol.X[d]);
+			}
+			valeur += 10.0 * (unProb.D - 1.0);
+			break;
+
 		default: valeur = FLT_MAX;
 	}
 	//Ne pas enlever/modifier
@@ -168,30 +189,30 @@ void EvaluationSolution(tSolution &Sol, tProblem unProb, tAlgoDE &unDE)
 }
 
 //**-----------------------------------------------------------------------
-//MUTATION: Creation du vecteur mutant à l'aide d'autres vecteurs de la population (ces vecteurs doivent être différents).
-//PARAMETRES: unePop-Ensemble des solutions, iTarget-Indice dans la population du vecteur cible impliqué dans la mutation, iBest-Indice dans la population de la meilleure solution
-//unMutant-Vecteur mutant qui sera produit et retourné, unProb-Définition du probleme, unDE-Définition de l'algorithme
+//MUTATION: Creation du vecteur mutant ï¿½ l'aide d'autres vecteurs de la population (ces vecteurs doivent ï¿½tre diffï¿½rents).
+//PARAMETRES: unePop-Ensemble des solutions, iTarget-Indice dans la population du vecteur cible impliquï¿½ dans la mutation, iBest-Indice dans la population de la meilleure solution
+//unMutant-Vecteur mutant qui sera produit et retournï¿½, unProb-Dï¿½finition du probleme, unDE-Dï¿½finition de l'algorithme
 void Mutation(std::vector<tSolution> unePop, int iTarget, int iBest, tSolution &unMutant, tProblem unProb, tAlgoDE unDE)
 {
-	int R1, R2, R3,			//indices des solutions choisies aléatoirement
+	int R1, R2, R3,			//indices des solutions choisies alï¿½atoirement
 		d;				
 
 	/**********************************************************************************************************************************************/
-	/*NB: Pour simplification: ne pas faire la vérification que la meilleure solution et le vecteur Cible (Target) sont des solutions différentes.*/
-	/*    Faire les vérifications pour les autres vecteurs                                                                                        */
+	/*NB: Pour simplification: ne pas faire la vï¿½rification que la meilleure solution et le vecteur Cible (Target) sont des solutions diffï¿½rentes.*/
+	/*    Faire les vï¿½rifications pour les autres vecteurs                                                                                        */
 	/**********************************************************************************************************************************************/
 	switch (unDE.TypeMut)
 	{
-		case RAND1:	//le vecteur mutant est crée en ajoutant 1 perturbation à l'aide de 3 solutions choisies aléatoirement (1 différence pondérée)
+		case RAND1:	//le vecteur mutant est crï¿½e en ajoutant 1 perturbation ï¿½ l'aide de 3 solutions choisies alï¿½atoirement (1 diffï¿½rence pondï¿½rï¿½e)
 			do R1 = rand() % unDE.NP; while (R1 == iTarget);
 			do R2 = rand() % unDE.NP; while (R2 == iTarget || R2 == R1);
 			do R3 = rand() % unDE.NP; while (R3 == iTarget || R3 == R1 || R3 == R2);
 			for (d = 0; d < unProb.D; d++)
 				unMutant.X[d] = unePop[R1].X[d] + unDE.F * (unePop[R2].X[d] - unePop[R3].X[d]);
 			break;
-		case BEST2:	//le vecteur mutant est créé en ajoutant une perturbation à Best à travers 2 différences pondérées de solutions sélectionnées aléatoirement
+		case BEST2:	//le vecteur mutant est crï¿½ï¿½ en ajoutant une perturbation ï¿½ Best ï¿½ travers 2 diffï¿½rences pondï¿½rï¿½es de solutions sï¿½lectionnï¿½es alï¿½atoirement
 			break;
-		case CURRENTtoBEST1: //Le vecteur mutant est créé à l’aide de deux vecteurs choisis au hasard, ainsi que du meilleur vecteur (Best)
+		case CURRENTtoBEST1: //Le vecteur mutant est crï¿½ï¿½ ï¿½ lï¿½aide de deux vecteurs choisis au hasard, ainsi que du meilleur vecteur (Best)
 			break;
 	}
 	//Confinement d'intervalle pour chaque dimension de la solution
@@ -202,13 +223,13 @@ void Mutation(std::vector<tSolution> unePop, int iTarget, int iBest, tSolution &
 }
 
 //**-----------------------------------------------------------------------
-//CROISEMENT: Échange de genes entre le vecteur Target (cible) et le vecteur Mutant afin de créer le vecteur Trial (essai-progéniture)
-//PARAMETRES: unTarget-Vecteur cible, unMutant-Vecteur mutant, unTrial-Vecteur d'essai qui sera produit et retourné, 
-//unProb-Définition du probleme, unDE-Définition de l'algorithme
+//CROISEMENT: ï¿½change de genes entre le vecteur Target (cible) et le vecteur Mutant afin de crï¿½er le vecteur Trial (essai-progï¿½niture)
+//PARAMETRES: unTarget-Vecteur cible, unMutant-Vecteur mutant, unTrial-Vecteur d'essai qui sera produit et retournï¿½, 
+//unProb-Dï¿½finition du probleme, unDE-Dï¿½finition de l'algorithme
 void Croisement(tSolution unTarget, tSolution unMutant, tSolution &unTrial, tProblem unProb, tAlgoDE &unDE)
 {
-	int n,			//croisement exponentionel: Point de départ (point coupure) [0,D-1]
-		L;			//croisement exponentionel: Nombre de dimensions à copier
+	int n,			//croisement exponentionel: Point de dï¿½part (point coupure) [0,D-1]
+		L;			//croisement exponentionel: Nombre de dimensions ï¿½ copier
 	double Alea;
 
 	switch (unDE.TypeCr)
