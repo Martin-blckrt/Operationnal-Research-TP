@@ -194,7 +194,7 @@ void EvaluationSolution(tSolution &Sol, tProblem unProb, tAlgoDE &unDE)
 //unMutant-Vecteur mutant qui sera produit et retourn�, unProb-D�finition du probleme, unDE-D�finition de l'algorithme
 void Mutation(std::vector<tSolution> unePop, int iTarget, int iBest, tSolution &unMutant, tProblem unProb, tAlgoDE unDE)
 {
-	int R1, R2, R3,			//indices des solutions choisies al�atoirement
+	int R1, R2, R3, R4, 		//indices des solutions choisies al�atoirement
 		d;				
 
 	/**********************************************************************************************************************************************/
@@ -210,9 +210,19 @@ void Mutation(std::vector<tSolution> unePop, int iTarget, int iBest, tSolution &
 			for (d = 0; d < unProb.D; d++)
 				unMutant.X[d] = unePop[R1].X[d] + unDE.F * (unePop[R2].X[d] - unePop[R3].X[d]);
 			break;
-		case BEST2:	//le vecteur mutant est cr�� en ajoutant une perturbation � Best � travers 2 diff�rences pond�r�es de solutions s�lectionn�es al�atoirement
+		case BEST2:	//le vecteur mutant est cr�� en ajoutant une perturbation � Best � travers 2 diff�rences pond�r�es de solutions s�lectionn�es al�
+			do R1 = rand() % unDE.NP; while (R1 == iTarget || R1 == iBest);
+			do R2 = rand() % unDE.NP; while (R2 == iTarget || R2 == R1 || R2 == iBest);
+			do R3 = rand() % unDE.NP; while (R3 == iTarget || R3 == R1 || R3 == R2 || R3 == iBest);
+			do R4 = rand() % unDE.NP; while (R4 == iTarget || R4 == R1 || R4 == R2 || R4 == R3 || R4 == iBest);
+			for (d = 0; d < unProb.D; d++)
+				unMutant.X[d] = unePop[iBest].X[d] + unDE.F * (unePop[R1].X[d] - unePop[R2].X[d]) + unDE.F * (unePop[R3].X[d] - unePop[R4].X[d]);
 			break;
 		case CURRENTtoBEST1: //Le vecteur mutant est cr�� � l�aide de deux vecteurs choisis au hasard, ainsi que du meilleur vecteur (Best)
+			do R1 = rand() % unDE.NP; while (R1 == iTarget || R1 == iBest);
+			do R2 = rand() % unDE.NP; while (R2 == iTarget || R2 == R1 || R2 == iBest);
+			for (d = 0; d < unProb.D; d++)
+				unMutant.X[d] = unePop[d].X[d] + unDE.F * (unePop[iBest].X[d] - unePop[d].X[d]) + unDE.F * (unePop[R1].X[d] - unePop[R2].X[d]);
 			break;
 	}
 	//Confinement d'intervalle pour chaque dimension de la solution
