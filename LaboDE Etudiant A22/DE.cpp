@@ -242,9 +242,23 @@ void Croisement(tSolution unTarget, tSolution unMutant, tSolution &unTrial, tPro
 		L;			//croisement exponentionel: Nombre de dimensions � copier
 	double Alea;
 
+	int jrand;		//croisement binomial : Permet de s'assurer que le vecteur d'essai soit différent du veceur cible
+
+
 	switch (unDE.TypeCr)
 	{
 			case BIN:	//Croisement de type binomial (ou uniform)
+				jrand = rand() % unProb.D;
+
+				for (int d = 0; d < unProb.D; d++)
+				{
+					Alea = AleaDouble(0, 1);
+					if (Alea <= unDE.CR || d == jrand)
+						unTrial.X[d] = unMutant.X[d];
+					else
+						unTrial.X[d] = unTarget.X[d];	
+				}
+
 				break;
 			case EXP:	//Croisement de type exponentiel (ou 2-point)
 				unTrial = unTarget;  //Copie du vecteur cible dans le vecteur essai
