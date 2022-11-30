@@ -73,11 +73,11 @@ int main(int NbParam, char *Param[])
 	cout.setf(ios::fixed | ios::showpoint);
 
 	//**Choix de la strat�gie de mutation/croisement
-	LeDE.TypeMut = RAND1;									//**Sp�cifie le type de Mutation (s�lection solutions + #perturbations) - Voir Entete.h
-	LeDE.TypeCr = EXP;										//**Sp�cifie le type de croisement  - Voir Entete.h
+	LeDE.TypeMut = BEST2;									//**Sp�cifie le type de Mutation (s�lection solutions + #perturbations) - Voir Entete.h
+	LeDE.TypeCr = BIN;										//**Sp�cifie le type de croisement  - Voir Entete.h
 	
 	//**Sp�cifications du probl�me � traiter
-	LeProb.Fonction = BOOTH;								//**Sp�cifie le probl�me trait�  - Voir Entete.h
+	LeProb.Fonction = RASTRIN;								//**Sp�cifie le probl�me trait�  - Voir Entete.h
 	InitialisationDomaineVariable(LeProb);
 
 	//**Dimension du vecteur de la population, initialisation des solutions avec des valeurs entre Xmin et Xmax
@@ -138,9 +138,9 @@ void InitialisationDomaineVariable(tProblem &unProb)
 	switch(unProb.Fonction)
 	{
 		case BOOTH:		unProb.Xmin = -10.0;	unProb.Xmax = 10.0; unProb.D = 2; break;
-		case SPHERE:	unProb.Xmin = -5.12;	unProb.Xmax = 5.12; unProb.D = 10; break;
-		case ALPINE:    unProb.Xmin = -10.0;	unProb.Xmax = 10.0; unProb.D = 10; break;
-		case RASTRIN:	unProb.Xmin = -5.12;	unProb.Xmax = 5.12; unProb.D = 10; break;
+		case SPHERE:	unProb.Xmin = -5.12;	unProb.Xmax = 5.12; unProb.D = 100; break;
+		case ALPINE:    unProb.Xmin = -10.0;	unProb.Xmax = 10.0; unProb.D = 100; break;
+		case RASTRIN:	unProb.Xmin = -5.12;	unProb.Xmax = 5.12; unProb.D = 50; break;
 		default:		unProb.Xmin = 0.0;		unProb.Xmax = 0.0;	unProb.D = 0; break;
 	}
 }
@@ -178,7 +178,7 @@ void EvaluationSolution(tSolution &Sol, tProblem unProb, tAlgoDE &unDE)
 			{
 				valeur += pow(Sol.X[d], 2) - 10 * cos(2 * pi * Sol.X[d]);
 			}
-			valeur += 10.0 * (unProb.D - 1.0);
+			valeur += 10.0 * (unProb.D);
 			break;
 
 		default: valeur = FLT_MAX;
@@ -222,7 +222,7 @@ void Mutation(std::vector<tSolution> unePop, int iTarget, int iBest, tSolution &
 			do R1 = rand() % unDE.NP; while (R1 == iTarget || R1 == iBest);
 			do R2 = rand() % unDE.NP; while (R2 == iTarget || R2 == R1 || R2 == iBest);
 			for (d = 0; d < unProb.D; d++)
-				unMutant.X[d] = unePop[d].X[d] + unDE.F * (unePop[iBest].X[d] - unePop[d].X[d]) + unDE.F * (unePop[R1].X[d] - unePop[R2].X[d]);
+				unMutant.X[d] = unePop[iTarget].X[d] + unDE.F * (unePop[iBest].X[d] - unePop[iTarget].X[d]) + unDE.F * (unePop[R1].X[d] - unePop[R2].X[d]);
 			break;
 	}
 	//Confinement d'intervalle pour chaque dimension de la solution
